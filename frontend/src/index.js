@@ -1,4 +1,5 @@
-const id="svgMapGPD-map-country-BR"
+
+const exampleID="svgMapGPD-map-country-BR"
 
 document.addEventListener("DOMContentLoaded", () => {
     renderMap();
@@ -11,6 +12,13 @@ function renderMap(){
     });
 }
 
-// function to add event listener to each country
+// need function to add event listener to each country
 
+
+
+// EVENT LISTENERS
+// ON WINDOW LOAD
+window.addEventListener('DOMContentLoaded', (event) => {
+    console.log('DOM fully loaded and parsed'); 
+});
 
