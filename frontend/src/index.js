@@ -1,8 +1,8 @@
 
-document.addEventListener("DOMContentLoaded", () => {
-    renderMap()
-    countriesAPI.getCountries().then(addEventListenerToEachCountry)
+window.addEventListener("DOMContentLoaded", () => {
+    railsApi.getCountries().then(countriesHandler)
 })
+
 
 function renderMap(){
     let mapData = getMapData();
@@ -73,3 +73,8 @@ function generateDataValues(){
 window.addEventListener('DOMContentLoaded', (event) => {
     console.log('DOM fully loaded and parsed'); 
 });
+
+function countriesHandler(countries){
+    SVGMAP.renderMap(countries)
+}
+
