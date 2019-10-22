@@ -10,7 +10,13 @@ class RatesController < ApplicationController
     end
 
     def create
-        Rate.create(country_code: country_code, current_rate: current_rate, query_id: query_id)
+        # byebug
+        rate = Rate.create(rate_params)
+        render json: rate
     end
 
+    private
+    def rate_params
+        params.require(:rate).permit(:country_code, :current_rate, :query_id)
+    end
 end
