@@ -101,9 +101,47 @@ let apiResponse = {
 
 function generateMapConfig(apiResponse){
     return {
-        targetElementID: 'map-container'
+        targetElementID: 'map-container',
+        data: {
+            rate: {
+                name: 'rate',
+                format: '{0}',
+                thousandSeparator: ',',
+                thresholdMax: getMaximumRate(apiResponse["rates"]), // CHANGE TO RELATIVE % CHANGE
+                thresholdMin: getMinimumRate(apiResponse["rates"])
+            },
+            change: {
+                name: 'Change from selected start date',
+                format: '{0} %'
+            }
+        },
+        applyData: 'rate',
+        values: generateDataValues(apiResponse)
 
     }
 }
 
+function getMaximumRate(rates){
+    let maxRate = Object.keys(rates).reduce( (a,b) => rates[a] > rates[b] ? a : b);
+    return rates[maxRate];
+}
 
+function getMinimumRate(rates){
+    let minRate = Object.keys(rates).reduce( (a,b) => rates[a] < rates[b] ? a : b);
+    return rates[minRate];
+}
+
+function generateDataValues(apiResponse){
+
+
+    let data = Object.assign(apiResponse["rates"])
+    
+    Object.keys(data).forEach(key => {
+        debugger
+    })
+
+
+    return {
+
+    }
+}
