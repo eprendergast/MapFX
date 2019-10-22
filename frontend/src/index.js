@@ -1,20 +1,72 @@
 
-const exampleID="svgMapGPD-map-country-BR"
-
 document.addEventListener("DOMContentLoaded", () => {
-    renderMap();
+    renderMap()
+    countriesAPI.getCountries().then(addEventListenerToEachCountry)
 })
 
 function renderMap(){
+    let mapData = getMapData();
+
     new svgMap({
-        targetElementID: 'svgMapGPD',
-        // data: svgMapDataGPD // 
+        targetElementID: 'map-container', 
+        data: mapData
     });
 }
 
-// need function to add event listener to each country
+function addEventListenerToEachCountry(countries) {
+    const countryCodes = generateArrayOfCountryCodes(countries)
+    const countrySelectors = generateArrayOfCountrySelectors(countryCodes)
+    countrySelectors.forEach(countrySelector => {
+       let country = document.getElementById(countrySelector);
+       if (country){
+        country.addEventListener('click', clickedOnCountry)
+       }
 
+    })
+}
 
+function generateArrayOfCountryCodes(countries){
+    let arrayOfCountryCodes = [];
+    countries.forEach(country => {
+        arrayOfCountryCodes.push(country.country_code)
+    });
+    return arrayOfCountryCodes;
+}
+
+function generateArrayOfCountrySelectors(countryCodes) {
+    let arrayOfCountrySelectors = [];
+    countryCodes.forEach(countryCode => {
+        arrayOfCountrySelectors.push(`map-container-map-country-${countryCode}`)
+    })
+    return arrayOfCountrySelectors;
+}
+
+function clickedOnCountry(event){
+    event.preventDefault();
+    alert("You just clicked on a country!")
+}
+
+function getMapData(){
+    return {
+        targetElementID:'map-container',
+        data: {
+            rate: {
+                name: 'Rate',
+                format: '{0} GBP'
+            }
+        }, 
+        applyData: 'rate',
+        values: {
+            CA: {rate: 2},
+            US: {rate: 1},
+            UK: {rate: 1.5}
+        }
+    }
+}
+
+function generateDataValues(){
+    let countryCodes = generateArrayOfCountryCodes()
+}
 
 // EVENT LISTENERS
 // ON WINDOW LOAD

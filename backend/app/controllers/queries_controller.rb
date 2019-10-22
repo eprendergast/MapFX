@@ -10,7 +10,14 @@ class QueriesController < ApplicationController
     end
 
     def create
-        Query.create(base_currency: base_currency)
+        query = Query.create(query_params)
+        render json: query
     end
+
+private
+
+def query_params
+    params.require(:query).permit(:base_currency)
+end
 
 end
