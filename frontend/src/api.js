@@ -52,32 +52,16 @@ function postNewQuery(baseCurrency) {
         }
 
     function postRates(queryId, data) {
-      console.log(queryId)
-      console.log(data)
       let rates = data.rates
-      console.log(rates)
-      // rates.forEach( rate => {
-      //   let exchangeRate = {
-      //     query_id: id,
-      //   country_code: rate[0],
-      //   current_rate: rate[1]
-      //   }
-      //   console.log(exchangeRate)
-      // })
+      let keyValuePairs = Object.entries(rates)
+      for (const [key, value] of keyValuePairs)
+      {
+        let exchangeRate = {
+          query_id: queryId,
+        country_code: key,
+        current_rate: parseInt(value)
+        }
+        // post(ratesURL, exchangeRate)
+        console.log(exchangeRate)
+      }
     }
-  //   )
-  // }
-
-
-
-
-
-    // rates = data.rates
-        // console.log(rates)
-        // console.log(Object.entries(rates))
-        // rates.forEach(rate => {
-        //   let ExchangeRate = {
-        //     // query_id: XXX,
-        // country_code: rate[0],
-        // current_rate: rate[1]
-        //   }
