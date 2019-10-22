@@ -60,7 +60,7 @@ function getMapData(){
         values: {
             CA: {rate: 2},
             US: {rate: 1},
-            UK: {rate: 1.5}
+            GB: {rate: 1.5}
         }
     }
 }
