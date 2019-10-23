@@ -74,7 +74,6 @@ function getMaximumChange(rates){
     }
     // let maxRate = Object.keys(rates).reduce( (a,b) => rates[a] > rates[b] ? a : b);
     // return rates[maxRate];
-    console.log(`Maximum: ${max}`)
     return max;
 }
 
@@ -87,7 +86,6 @@ function getMinimumChange(rates){
     }
     // let minRate = Object.keys(rates).reduce( (a,b) => rates[a] > rates[b] ? a : b);
     // return rates[minRate];
-    console.log(`Minimum: ${min}`)
     return min;
 }
 

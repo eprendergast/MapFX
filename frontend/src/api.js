@@ -7,12 +7,19 @@ const ratesURL = "http://localhost:3000/rates"
 // EXCHANGE RATE API
 const baseURL = "https://api.exchangeratesapi.io/latest/"
 const setBaseCurrency = "https://api.exchangeratesapi.io/latest/?base="
-const setHistoricalDate = "https://api.exchangeratesapi.io/2010-01-12"
+const setHistoricalDate = "https://api.exchangeratesapi.io/"
 const getHistoricalDataForATimeWindow = "https://api.exchangeratesapi.io/history?start_at=2018-01-01&end_at=2018-09-01"
 const compareSpecificCurrencies = "https://api.exchangeratesapi.io/latest?symbols="
 
 
+const fxApi = {
+    getHistoricalData,
+    getLatestRatesWithBase
+}
 
+function getHistoricalData(latestDataResponse, baseCurrency, date) {
+    return fetch(setHistoricalDate + `${date}` + `?base=` + `${baseCurrency}`).then(resp => resp.json()).then(historicalDataResponse => railsApi.getCountries(historicalDataResponse, latestDataResponse))
+}
 
 // CURRENCY API REQUESTS
 // GET LATEST RATES

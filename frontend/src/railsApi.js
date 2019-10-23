@@ -7,6 +7,6 @@ const railsApi = {
     getCountries
 }
 
-function getCountries(){
-    return fetch(COUNTRIES_URL).then(response => response.json())
+function getCountries(historicalDataResponse, latestDataResponse){
+    return fetch(COUNTRIES_URL).then(response => response.json()).then(countries => countriesHandler(countries, latestDataResponse, historicalDataResponse))
 }

@@ -260,7 +260,6 @@ country_data = {
 
 country_data.each do |country| 
 	Country.create(country_code: country[0], country_name: country[1])
-	byebug
 end
 
 
