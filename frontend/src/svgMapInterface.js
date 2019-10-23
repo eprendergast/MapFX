@@ -91,7 +91,7 @@ function generateDataValues(currentRatesResponse, historicalRatesResponse){
     
     let currentValues = currentRatesResponse["rates"];
     let historicalValues = historicalRatesResponse["rates"];
-    debugger
+
     for (let country in currentValues) {
         let percentageChange = ((currentValues[country] - historicalValues[country])/historicalValues[country]) * 100;
         let roundedCurrentRate = currentValues[country].toFixed(3);
