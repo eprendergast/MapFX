@@ -11,6 +11,9 @@ const setHistoricalDate = "https://api.exchangeratesapi.io/2010-01-12"
 const getHistoricalDataForATimeWindow = "https://api.exchangeratesapi.io/history?start_at=2018-01-01&end_at=2018-09-01"
 const compareSpecificCurrencies = "https://api.exchangeratesapi.io/latest?symbols="
 
+
+
+
 // CURRENCY API REQUESTS
 // GET LATEST RATES
 function getLatestRates() {
