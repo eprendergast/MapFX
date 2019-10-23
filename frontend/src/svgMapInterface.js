@@ -3,7 +3,7 @@ const SVGMAP = {
 }
 
 function renderMap(countries, currentRatesResponse, historicalRatesResponse){
-    let mapData = generateMapConfig(currentRatesResponse, historicalRatesResponse)
+    let mapData = generateMapConfig(currentRatesResponse, historicalRatesResponse);
     console.log(mapData)
 
     new svgMap({
@@ -23,13 +23,10 @@ function addEventListenersToCountries(countries) {
 function addEventListenerToCountry(country){
     let countryMapId = generateCountryMapId(country)
     let countryMapElement = document.getElementById(countryMapId)
-    
     if (countryMapElement) {
         countryMapElement.addEventListener('click', () => {
             clickedOnCountry(event, country)
         })
-    } else {
-        console.log(`Could not add event listener for ${country.country_name}`)
     }
 }
 
@@ -43,23 +40,27 @@ function clickedOnCountry(event, country){ // CALL NEW FETCH TO FX DATA API FROM
 }
 
 function generateMapConfig(currentRatesResponse, historicalRatesResponse){
-    
     let dataConfig = generateDataValues(currentRatesResponse, historicalRatesResponse)
     return {
         data: {
-            rate: {
-                name: 'rate',
+            currentRate: {
+                name: 'Today\'s rate:',
                 format: '{0}',
-                thousandSeparator: ',',
+                thresholdMax: getMaximumChange(dataConfig), 
+                thresholdMin: getMinimumChange(dataConfig)
+            },
+            historicalRate: {
+                name: 'Historical rate:',
+                format: '{0}',
                 thresholdMax: getMaximumChange(dataConfig), 
                 thresholdMin: getMinimumChange(dataConfig)
             },
             change: {
-                name: 'Change',
+                name: 'Percentage change:',
                 format: '{0} %'
             }
         },
-        applyData: 'rate',
+        applyData: 'change',
         values: dataConfig
     }
 }
@@ -72,8 +73,6 @@ function getMaximumChange(rates){
             max = rates[country].change;
         } 
     }
-    // let maxRate = Object.keys(rates).reduce( (a,b) => rates[a] > rates[b] ? a : b);
-    // return rates[maxRate];
     return max;
 }
 
@@ -84,47 +83,23 @@ function getMinimumChange(rates){
             min = rates[country].change;
         } 
     }
-    // let minRate = Object.keys(rates).reduce( (a,b) => rates[a] > rates[b] ? a : b);
-    // return rates[minRate];
     return min;
 }
 
-function generateMapConfig(currentRatesResponse, historicalRatesResponse){
-    
-    let data = generateDataValues(currentRatesResponse, historicalRatesResponse)
-    
-    return {
-        targetElementID: 'map-container',
-        data: {
-            rate: {
-                name: 'rate',
-                format: '{0}',
-                thousandSeparator: ',',
-                thresholdMax: getMaximumChange(data["rates"]),
-                thresholdMin: getMinimumChange(data["rates"])
-            },
-            change: {
-                name: 'Change from selected start date',
-                format: '{0} %'
-            }
-        },
-        applyData: 'change',
-        values: data
-    }
-}
 
 function generateDataValues(currentRatesResponse, historicalRatesResponse){
     
     let currentValues = currentRatesResponse["rates"];
     let historicalValues = historicalRatesResponse["rates"];
-
+    debugger
     for (let country in currentValues) {
-        let fxRate = currentValues[country];
-        let percentageChange = (fxRate - historicalValues[country])/historicalValues[country] * 100;
-        currentValues[country] = {rate: fxRate, change: percentageChange}
+        let percentageChange = ((currentValues[country] - historicalValues[country])/historicalValues[country]) * 100;
+        let roundedCurrentRate = currentValues[country].toFixed(3);
+        let roundedHistoricalRate = historicalValues[country].toFixed(3);
+        currentValues[country] = {currentRate: roundedCurrentRate, historicalRate: roundedHistoricalRate, change: percentageChange};
     }
 
-    currentValues[currentRatesResponse["base"]] = {rate: 1, change: 0}
+    currentValues[currentRatesResponse["base"]] = {currentRate: 1, historicalRate: 1, change: 0};
 
     let ratesByCountry = convertCurrencyToCountryCode(currentValues);
     return ratesByCountry;
@@ -194,7 +169,7 @@ function convertCurrencyToCountryCode(currentValues){
              case'ILS' :
              ratesByCountry['IL'] = currentValues[currencyCode]
              case'GBP' :
-             ratesByCountry['UK'] = currentValues[currencyCode]
+             ratesByCountry['GB'] = currentValues[currencyCode]
              case'KRW' :
              ratesByCountry['KR'] = currentValues[currencyCode]
              case'MYR' :
