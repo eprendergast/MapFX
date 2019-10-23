@@ -5,6 +5,11 @@ class QueriesController < ApplicationController
         render json: queries
     end
 
+    def show
+        query = Query.find(params[:id])
+        render json: query
+    end
+
     def new
         query = Query.new
     end
