@@ -91,47 +91,10 @@ function getMinimumChange(rates){
     return min;
 }
 
-let apiResponse = {
-    rates: {
-      CAD: 1.4959,
-      HKD: 11.2301,
-      LVL: 0.7093,
-      PHP: 66.106,
-      DKK: 7.4405,
-      HUF: 268.18,
-      CZK: 26.258,
-      AUD: 1.5668,
-      RON: 4.1405,
-      SEK: 10.2215,
-      IDR: 13281.14,
-      INR: 66.21,
-      BRL: 2.5309,
-      RUB: 42.6974,
-      LTL: 3.4528,
-      JPY: 132.41,
-      THB: 47.839,
-      CHF: 1.4743,
-      SGD: 2.0133,
-      PLN: 4.0838,
-      BGN: 1.9558,
-      TRY: 2.1084,
-      CNY: 9.8863,
-      NOK: 8.1825,
-      NZD: 1.9573,
-      ZAR: 10.8264,
-      USD: 1.4481,
-      MXN: 18.4995,
-      EEK: 15.6466,
-      GBP: 0.8972,
-      KRW: 1627.4,
-      MYR: 4.8424,
-      HRK: 7.2753
-    },
-    base: 'EUR',
-    date: '2010-01-12'
-  }
-
-function generateMapConfig(apiResponse){
+function generateMapConfig(currentRatesResponse, historicalRatesResponse){
+    
+    let data = generateDataValues(currentRatesResponse, historicalRatesResponse)
+    
     return {
         targetElementID: 'map-container',
         data: {
@@ -139,17 +102,18 @@ function generateMapConfig(apiResponse){
                 name: 'rate',
                 format: '{0}',
                 thousandSeparator: ',',
-                thresholdMax: getMaximumRate(apiResponse["rates"]), // CHANGE TO RELATIVE % CHANGE
-                thresholdMin: getMinimumRate(apiResponse["rates"])
+                thresholdMax: getMaximumChange(data["rates"]),
+                thresholdMin: getMinimumChange(data["rates"])
             },
             change: {
                 name: 'Change from selected start date',
                 format: '{0} %'
             }
         },
-        applyData: 'rate',
-        values: generateDataValues(apiResponse)
-
+        applyData: 'change',
+        values: data
+    }
+}
 
 function generateDataValues(currentRatesResponse, historicalRatesResponse){
     
@@ -159,21 +123,19 @@ function generateDataValues(currentRatesResponse, historicalRatesResponse){
     for (let country in currentValues) {
         let fxRate = currentValues[country];
         let percentageChange = (fxRate - historicalValues[country])/historicalValues[country] * 100;
-        currentValues[country] = {rate: fxRate, change: percentageChange} // NEED TO WRITE FUNCTION TO CALCULATE RELATIVE CHANGE
+        currentValues[country] = {rate: fxRate, change: percentageChange}
     }
 
     currentValues[currentRatesResponse["base"]] = {rate: 1, change: 0}
 
-    let ratesByCountry = convertCurrencyToCountryCode(currentValues)
+    let ratesByCountry = convertCurrencyToCountryCode(currentValues);
     return ratesByCountry;
 }
 
 
 function convertCurrencyToCountryCode(currentValues){
-
     let ratesByCountry = {};
-
-    for (let currencyCode in currentValues){
+    for (let currencyCode in currentValues) {
         switch (currencyCode){
             case 'CAD':
                 ratesByCountry['CA'] = currentValues[currencyCode]
@@ -265,33 +227,7 @@ function convertCurrencyToCountryCode(currentValues){
              ratesByCountry['SI'] = currentValues[currencyCode]
              ratesByCountry['SK'] = currentValues[currencyCode]
              ratesByCountry['XK'] = currentValues[currencyCode]
-            }
-
         }
-    return ratesByCountry
-
-// function getMaximumRate(rates){
-//     let maxRate = Object.keys(rates).reduce( (a,b) => rates[a] > rates[b] ? a : b);
-//     return rates[maxRate];
-// }
-
-// function getMinimumRate(rates){
-//     let minRate = Object.keys(rates).reduce( (a,b) => rates[a] < rates[b] ? a : b);
-//     return rates[minRate];
-// }
-
-function generateDataValues(apiResponse){
-
-
-    let data = Object.assign(apiResponse["rates"])
-    
-    Object.keys(data).forEach(key => {
-        debugger
-    })
-
-
-    return {
-
     }
-
+    return ratesByCountry;
 }

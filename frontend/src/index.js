@@ -1,9 +1,11 @@
 
 window.addEventListener("DOMContentLoaded", () => {
-    railsApi.getCountries().then(countriesHandler)
+    railsApi.getCountries().then(countries => {
+      countriesHandler(countries, currentRatesResponse, historicalRatesResponse)
+    })
 })
 
-let historicalRatesResponse = {
+const historicalRatesResponse = {
     rates: {
       CAD: 1.4959,
       HKD: 11.2301,
@@ -43,7 +45,7 @@ let historicalRatesResponse = {
     date: '2010-01-12'
   }
 
-  let currentRatesResponse = {
+  const currentRatesResponse = {
     rates: {
     CAD: 1.4643,
     HKD: 8.7635,
@@ -82,8 +84,7 @@ let historicalRatesResponse = {
     date: "2019-10-21"
 }
 
-
-
-function countriesHandler(countries){
+function countriesHandler(countries, currentRatesResponse, historicalRatesResponse){
+    debugger
     SVGMAP.renderMap(countries, currentRatesResponse, historicalRatesResponse)
 }
