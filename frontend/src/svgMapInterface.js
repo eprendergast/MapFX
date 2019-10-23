@@ -2,8 +2,6 @@ const SVGMAP = {
     renderMap
 }
 
-
-
 function renderMap(countries, currentRatesResponse, historicalRatesResponse){
     let mapData = generateMapConfig(currentRatesResponse, historicalRatesResponse)
     console.log(mapData)
@@ -44,27 +42,6 @@ function clickedOnCountry(event, country){ // CALL NEW FETCH TO FX DATA API FROM
     alert(`You clicked on ${country.country_name}!`)
 }
 
-// function getMapData(){
-//     return {
-//         targetElementID:'map-container',
-//         data: {
-//             rate: {
-//                 name: 'Rate',
-//                 format: '{0} GBP'
-//             }
-//         }, 
-//         applyData: 'rate',
-//         values: {
-//             CA: {rate: 2},
-//             US: {rate: 1},
-//             UK: {rate: 1.5}
-//         }
-//     }
-// }
-
-
-// pass in two currentRatesResponses
-
 function generateMapConfig(currentRatesResponse, historicalRatesResponse){
     
     let dataConfig = generateDataValues(currentRatesResponse, historicalRatesResponse)
@@ -74,7 +51,7 @@ function generateMapConfig(currentRatesResponse, historicalRatesResponse){
                 name: 'rate',
                 format: '{0}',
                 thousandSeparator: ',',
-                thresholdMax: getMaximumChange(dataConfig), // CHANGE TO RELATIVE % CHANGE
+                thresholdMax: getMaximumChange(dataConfig), 
                 thresholdMin: getMinimumChange(dataConfig)
             },
             change: {
@@ -96,19 +73,20 @@ function getMaximumChange(rates){
     }
     // let maxRate = Object.keys(rates).reduce( (a,b) => rates[a] > rates[b] ? a : b);
     // return rates[maxRate];
+    console.log(`Maximum: ${max}`)
     return max;
 }
 
 function getMinimumChange(rates){
     let min = 0;
     for(let country in rates){
-        if (rates[country].rate < min){
-            debugger
-            min = rates[country].rate;
+        if (rates[country].change < min){
+            min = rates[country].change;
         } 
     }
     // let minRate = Object.keys(rates).reduce( (a,b) => rates[a] > rates[b] ? a : b);
     // return rates[minRate];
+    console.log(`Minimum: ${min}`)
     return min;
 }
 
@@ -128,11 +106,6 @@ function generateDataValues(currentRatesResponse, historicalRatesResponse){
     let ratesByCountry = convertCurrencyToCountryCode(currentValues)
     return ratesByCountry;
 }
-
-
-
-// https://www.npmjs.com/package/country-data
-
 
 function convertCurrencyToCountryCode(currentValues){
 
