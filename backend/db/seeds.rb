@@ -256,8 +256,14 @@ country_data = {
 	'ZW' => 'Zimbabwe'
 }
 
+
+
 country_data.each do |country| 
-    Country.create(country_code: country[0], country_name: country[1])
+	Country.create(country_code: country[0], country_name: country[1])
+	byebug
 end
 
+
+
 puts "#{Country.all.length} countries created"
+
