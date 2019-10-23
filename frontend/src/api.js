@@ -1,5 +1,8 @@
 // CONSTANTS
 // BACKEND ENDPOINTS
+const countriesURL = "http://localhost:3000/countries"
+const queriesURL = "http://localhost:3000/queries"
+const ratesURL = "http://localhost:3000/rates"
 
 // EXCHANGE RATE API
 const baseURL = "https://api.exchangeratesapi.io/latest/"
@@ -22,7 +25,46 @@ function getLatestRatesWithBase(currency) {
 }
 
 // GET LATEST RATES FOR TWO SPECIFIC CURRENCIES
-function getAndComapareTwoCurrencies (currencyOne, currencyTwo) {
+function getAndComapareTwoCurrencies(currencyOne, currencyTwo) {
     return fetch(compareSpecificCurrencies+currencyOne+","+currencyTwo).then(resp => resp.json())
 }
 
+// POST TO BACKEND
+function post(url, entryData) {
+  return fetch(url, {
+    method: "POST",
+    headers:
+    {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    },
+    body: JSON.stringify(entryData)
+  }).then(response => response.json())
+}
+
+// POST NEW QUERY
+function postNewQuery(baseCurrency) {
+    getLatestRatesWithBase(baseCurrency).then( (resp) => postQuery(queriesURL, resp))
+    }
+
+    function postQuery(url, data) {
+        let base = {
+            base_currency: data.base
+        }
+        post(url, base).then( response => postRates(response.id, data))
+        }
+
+    function postRates(queryId, data) {
+      let rates = data.rates
+      let keyValuePairs = Object.entries(rates)
+      for (const [key, value] of keyValuePairs)
+      {
+        let exchangeRate = {
+          query_id: queryId,
+        country_code: key,
+        current_rate: parseInt(value)
+        }
+        // post(ratesURL, exchangeRate)
+        console.log(exchangeRate)
+      }
+    }
