@@ -1,6 +1,12 @@
 
 window.addEventListener("DOMContentLoaded", () => {
-    railsApi.getCountries().then(countries => {
+  
+  let queryForm = document.getElementById('query-form')
+  queryForm.addEventListener('submit', () => {
+    
+  })
+  
+  railsApi.getCountries().then(countries => {
       countriesHandler(countries, currentRatesResponse, historicalRatesResponse)
     })
 })

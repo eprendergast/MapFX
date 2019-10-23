@@ -20,13 +20,14 @@
         <h2>Please select your view below:</h2>
 
         <form id ="query-form">
-            <select name="" id="">
-                <!-- OPTIONS TO BE DYNAMICALLY RENDERED BASED ON DATA SNAPSHOTS SAVED IN RAILS DB -->
-                <option value="12-12-2018">Past Week</option>
-                <option value="12-12-2018">Past Month</option>
-                <option value="12-12-2018">Past 3 Months</option>
+            <label for="date">Date:</label> 
+            <input type="date" name="date">
+            <label for="base-currency">Base Currency:</label> 
+            <select name="base-currency" id="base-currency">
+                <option value="GB">GB</option>
+                <option value="EUR">EUR</option>
             </select>
-            <button>Submit</button>
+            <input type="submit" value="Submit">
         </form>
 
     </div>
