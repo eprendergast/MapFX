@@ -1,3 +1,3 @@
 class Query < ApplicationRecord
-    has_many :rates
+    # has_many :rates
 end
