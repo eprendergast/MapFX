@@ -26,8 +26,8 @@ svgMap.prototype.init = function (options) {
     mouseWheelZoomEnabled: true,
 
     // Data colors
-    colorMax: '#CC0033',
-    colorMin: '#FFE5D9',
+    colorMax: '#af12e3',
+    colorMin: '#cfa2de',
     colorNoData: '#E2E2E2',
 
     // The flag type can be 'image' or 'emoji'

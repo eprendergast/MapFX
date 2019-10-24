@@ -8,7 +8,9 @@ function renderMap(countries, currentRatesResponse, historicalRatesResponse){
 
     new svgMap({
         targetElementID: 'map-container',
-        data: mapData
+        data: mapData,
+        colorMax: '#af12e3',
+        colorMin: '#cfa2de'
     })
 
     addEventListenersToCountries(countries);
