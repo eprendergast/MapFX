@@ -1,8 +1,9 @@
 class CreateCountries < ActiveRecord::Migration[6.0]
   def change
     create_table :countries do |t|
-      t.string :country_code
-      t.string :country_name
+      t.string :code
+      t.string :name
+      t.string :currency
       t.timestamps
     end
   end

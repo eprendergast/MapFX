@@ -3,6 +3,8 @@
 const countriesURL = "http://localhost:3000/countries"
 const queriesURL = "http://localhost:3000/queries"
 const ratesURL = "http://localhost:3000/rates"
+const searchByCurrencyURL = `${countriesURL}/search_by_currency`; // append currency code
+const searchByCountryCodeURL = `${countriesURL}/search_by_country_code`; //append country code
 
 // EXCHANGE RATE API
 const baseURL = "https://api.exchangeratesapi.io/latest/"
@@ -11,14 +13,31 @@ const setHistoricalDate = "https://api.exchangeratesapi.io/"
 const getHistoricalDataForATimeWindow = "https://api.exchangeratesapi.io/history?start_at=2018-01-01&end_at=2018-09-01"
 const compareSpecificCurrencies = "https://api.exchangeratesapi.io/latest?symbols="
 
-
-const fxApi = {
+const API = {
     getHistoricalData,
-    getLatestRatesWithBase
+    getLatestRatesWithBase,
+    getCountries, 
+    getCountryByCountryCode,
+    getCountryByCurrency
+}
+
+function getCountries(historicalDataResponse, latestDataResponse){
+  return fetch(countriesURL).then(response => response.json()).then(countries => countriesHandler(countries, latestDataResponse, historicalDataResponse))
+}
+
+function getCountryByCurrency(currency){
+  let url = `${searchByCurrencyURL}/${currency}`;
+  return fetch(url).then(resp => resp.json())
+}
+
+function getCountryByCountryCode(countryCode){
+  let url = `${searchByCountryCodeURL}/${countryCode}`;
+  debugger
+  return fetch(url).then(resp => resp.json())
 }
 
 function getHistoricalData(latestDataResponse, baseCurrency, date) {
-    return fetch(setHistoricalDate + `${date}` + `?base=` + `${baseCurrency}`).then(resp => resp.json()).then(historicalDataResponse => railsApi.getCountries(historicalDataResponse, latestDataResponse))
+    return fetch(setHistoricalDate + `${date}` + `?base=` + `${baseCurrency}`).then(resp => resp.json()).then(historicalDataResponse => API.getCountries(historicalDataResponse, latestDataResponse))
 }
 
 // CURRENCY API REQUESTS
